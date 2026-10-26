@@ -149,6 +149,7 @@ kbd { font: 11px var(--mono); color: var(--muted); }
   pointer-events: none;
 }
 .workspace__empty button { pointer-events: auto; }
+.workspace__empty-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .workspace__busy {
   position: absolute;
   top: 10px;
@@ -264,6 +265,42 @@ kbd { font: 11px var(--mono); color: var(--muted); }
 .segmented button { border: 0; background: var(--surface); padding: 0 12px; cursor: pointer; }
 .segmented button + button { border-left: 1px solid var(--border-strong); }
 .segmented button[aria-pressed='true'] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+/* тестовые изображения */
+.samples__intro { margin: 0 0 12px; }
+.samples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.sample {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+}
+.sample:hover { border-color: var(--accent); background: var(--accent-soft); }
+.sample:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sample__badge {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 5px;
+  font: 600 10px var(--mono);
+  letter-spacing: 0.04em;
+}
+.sample__badge--png { background: #e6f4ea; color: #237a3b; }
+.sample__badge--jpeg { background: #fff3df; color: #9a5b00; }
+.sample__badge--gb7 { background: #ebe7fb; color: #5a45b5; }
+.sample__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sample__title { font-size: 13px; }
+.sample__file, .sample__note { font-size: 11px; color: var(--muted); overflow-wrap: anywhere; }
+.sample__file { font-family: var(--mono); }
+@media (max-width: 600px) { .samples { grid-template-columns: 1fr; } }
 
 /* ---------- модальные окна ---------- */
 .modal { border: 1px solid var(--border); border-radius: 10px; padding: 0; background: var(--surface); color: var(--text); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25); max-height: calc(100vh - 24px); }

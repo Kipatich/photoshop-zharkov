@@ -5,6 +5,7 @@ import { InfoPanel, type PickedColor } from './components/InfoPanel';
 import { LevelsDialog } from './components/LevelsDialog';
 import { MenuBar, type Menu } from './components/MenuBar';
 import { ResizeDialog } from './components/ResizeDialog';
+import { SamplesDialog, type SampleImage } from './components/SamplesDialog';
 import { StatusBar } from './components/StatusBar';
 import { Workspace, clampPercent, type Tool, type ViewState } from './components/Workspace';
 import { rgbToLab } from './core/color';
@@ -13,7 +14,7 @@ import { DEFAULT_INTERPOLATION, getInterpolator, resizeRaster } from './core/int
 import { composeForDisplay, getChannelKeys, readPixel, type ChannelKey, type ChannelVisibility, type RasterImage } from './core/raster';
 import { useImageStore } from './store/imageStore';
 
-type DialogId = 'levels' | 'filter' | 'resize' | null;
+type DialogId = 'levels' | 'filter' | 'resize' | 'samples' | null;
 
 /** Отступ от краёв окна при начальном вписывании изображения. */
 const FIT_MARGIN = 50;
@@ -64,6 +65,7 @@ export default function App() {
   const [dialog, setDialog] = useState<DialogId>(null);
   const [preview, setPreview] = useState<RasterImage | null>(null);
   const [busy, setBusy] = useState(false);
+  const [loadingSample, setLoadingSample] = useState(false);
   const [message, setMessage] = useState('Откройте изображение: Файл → Открыть или перетащите файл в окно');
 
   // то, что сейчас показывается: предпросмотр инструмента или текущее изображение
@@ -87,6 +89,24 @@ export default function App() {
     } catch (error) {
       console.error(error);
       setMessage(`Ошибка: ${error instanceof Error ? error.message : 'не удалось открыть файл'}`);
+    }
+  };
+
+  const openSample = async (sample: SampleImage) => {
+    setDialog(null);
+    setLoadingSample(true);
+    setMessage(`Загрузка: ${sample.title}…`);
+    try {
+      const url = new URL(`test-images/${sample.file}`, document.baseURI).href;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`не удалось загрузить ${sample.file} (${response.status})`);
+      const blob = await response.blob();
+      await openFile(new File([blob], sample.file, { type: sample.mime }));
+    } catch (error) {
+      console.error(error);
+      setMessage(`Ошибка: ${error instanceof Error ? error.message : 'не удалось загрузить изображение'}`);
+    } finally {
+      setLoadingSample(false);
     }
   };
 
@@ -175,6 +195,7 @@ export default function App() {
       label: 'Файл',
       items: [
         { label: 'Открыть…', shortcut: 'Ctrl+O', onSelect: () => inputRef.current?.click() },
+        { label: 'Тестовые изображения…', onSelect: () => setDialog('samples') },
         { label: 'Сохранить как PNG', disabled: noImage, onSelect: () => save('png'), separatorBefore: true },
         { label: 'Сохранить как JPG', disabled: noImage, onSelect: () => save('jpg') },
         { label: 'Сохранить как GB7', disabled: noImage, onSelect: () => save('gb7') },
@@ -248,12 +269,13 @@ export default function App() {
           view={view}
           interpolation={interpolation}
           tool={tool}
-          busy={busy}
+          busy={busy || loadingSample}
           onViewChange={setView}
           onViewportResize={handleViewportResize}
           onPick={pick}
           onFileDrop={(file) => void openFile(file)}
           onOpenClick={() => inputRef.current?.click()}
+          onSamplesClick={() => setDialog('samples')}
         />
       </main>
 
@@ -304,6 +326,7 @@ export default function App() {
         onApply={applyResize}
         onClose={closeDialog}
       />
+      <SamplesDialog open={dialog === 'samples'} onSelect={(sample) => void openSample(sample)} onClose={closeDialog} />
     </div>
   );
 }

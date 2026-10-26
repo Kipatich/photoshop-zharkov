@@ -25,6 +25,7 @@ type Props = {
   onPick: (x: number, y: number) => void;
   onFileDrop: (file: File) => void;
   onOpenClick: () => void;
+  onSamplesClick: () => void;
 };
 
 function createChecker(ctx: CanvasRenderingContext2D) {
@@ -45,7 +46,7 @@ function createChecker(ctx: CanvasRenderingContext2D) {
  * изображение рисуется в центре с выбранным масштабом с помощью
  * собственной интерполяции (renderViewport).
  */
-export function Workspace({ rgba, view, interpolation, tool, busy, onViewChange, onViewportResize, onPick, onFileDrop, onOpenClick }: Props) {
+export function Workspace({ rgba, view, interpolation, tool, busy, onViewChange, onViewportResize, onPick, onFileDrop, onOpenClick, onSamplesClick }: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -186,9 +187,14 @@ export function Workspace({ rgba, view, interpolation, tool, busy, onViewChange,
       {!rgba && (
         <div className="workspace__empty">
           <p>Перетащите сюда PNG, JPG или GB7</p>
-          <button type="button" className="btn btn--primary" onClick={onOpenClick}>
-            Открыть файл…
-          </button>
+          <div className="workspace__empty-actions">
+            <button type="button" className="btn btn--primary" onClick={onOpenClick}>
+              Открыть файл…
+            </button>
+            <button type="button" className="btn" onClick={onSamplesClick}>
+              Тестовые изображения
+            </button>
+          </div>
         </div>
       )}
       {busy && <div className="workspace__busy">Обработка…</div>}
