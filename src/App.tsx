@@ -211,7 +211,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <MenuBar menus={menus} title={image ? `${fileName} @ ${view.percent}%` : 'Жарков С.И. · 231-322'} />
+      <MenuBar menus={menus} title={image ? `${fileName} @ ${view.percent}%` : 'Жарков С.И. 231-322'} />
 
       <input
         ref={inputRef}
