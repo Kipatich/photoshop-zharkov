@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.vscode/
+.DS_Store
+coverage/
+.idea/
+
+# локальные служебные файлы
+_ref/
+.tools/
+.npm-cache/
+.chrome-profile/
+screenshot-*.png
+*.log
