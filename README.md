@@ -3,6 +3,9 @@
 **Жарков Сергей Иванович**, группа **231-322**  
 Дисциплина: «Технологии компьютерной графики»
 
+**Демо:** [kipatich.github.io/photoshop-zharkov](https://kipatich.github.io/photoshop-zharkov/)  
+**Репозиторий:** [github.com/Kipatich/photoshop-zharkov](https://github.com/Kipatich/photoshop-zharkov)
+
 Веб-приложение для просмотра и обработки растровых изображений. Поддерживает PNG, JPG и учебный формат GB7, работу с каналами, уровнями, масштабированием и фильтрацией. Все алгоритмы обработки пикселей написаны вручную, без графических библиотек.
 
 ![Интерфейс редактора](docs/screenshot.png)
@@ -97,7 +100,7 @@ public/test-images/          тестовые PNG, JPG и GB7
 
 ### GitHub Pages
 
-В репозитории уже есть workflow `.github/workflows/deploy.yml`. После первого push в `main` откройте **Settings → Pages** и выберите источник **GitHub Actions**. Сборка будет публиковаться автоматически.
+Сайт опубликован: [kipatich.github.io/photoshop-zharkov](https://kipatich.github.io/photoshop-zharkov/). В репозитории есть workflow `.github/workflows/deploy.yml`: после push в `main` GitHub Actions пересобирает проект и обновляет страницу автоматически. Источник публикации в настройках репозитория — **Settings → Pages → GitHub Actions**.
 
 ### Хостинг ИТ-факультета
 
